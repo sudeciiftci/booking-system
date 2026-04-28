@@ -1,7 +1,7 @@
 public class Admin extends User{
 
-    public Admin(int userId, String name, String email, String password){
-        super(userId, name, email, password);
+    public Admin(String userName, String email, String password){
+        super(userName, email, password);
     }
 
     void addMovie(Movie movie){

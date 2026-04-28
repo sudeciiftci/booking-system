@@ -1,0 +1,8 @@
+# Java class files
+*.class
+
+# OS files
+.DS_Store
+
+# Config
+DBConfig.java

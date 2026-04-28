@@ -21,7 +21,6 @@ public class Session {
     public String getDateTime() { return dateTime; }
     public double getPrice() { return price; }
 
-    // Setters
     public void setDateTime(String dateTime) { this.dateTime = dateTime; }
     public void setPrice(double price) { this.price = price; }
 
