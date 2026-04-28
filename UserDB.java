@@ -6,9 +6,9 @@ public class UserDB {
 
     public Connection con(){
 
-        String url = "jdbc:mysql://localhost:3306/MovieDB";
-        String user = "root";
-        String password = "root1234";
+        String url = DBConfig.URL;
+        String user = DBConfig.USER;
+        String password = DBConfig.PASSWORD;
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
