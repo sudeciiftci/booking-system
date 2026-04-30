@@ -30,7 +30,14 @@ public class MainUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             new SignUpUI();
         }
-    });
+        });
+
+        loginButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginUI();
+            }
+        });
 
         setVisible(true);
     }

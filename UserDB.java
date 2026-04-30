@@ -1,29 +1,92 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserDB {
 
-    public Connection con(){
+    public Connection con() throws SQLException {
 
-        String url = DBConfig.URL;
-        String user = DBConfig.USER;
-        String password = DBConfig.PASSWORD;
+        return DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
+
+    }
+
+    public int addUser(User user){
+
+        String sql = "INSERT INTO users (userName, email, password, role) VALUES(?, ?, ?, ?)";
 
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = con();
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            Connection conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Başarılı");
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, "user");
 
-            return conn;
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
 
-        } catch(ClassNotFoundException e){
+            int id = -1;
+
+            if(rs.next()){
+                id = rs.getInt(1);
+            }
+
+            ps.close();
+            rs.close();
+            return id;
+
+        }catch(SQLException e){
             e.printStackTrace();
-        } catch(SQLException e){
+            return -1;
+        }  
+    }
+
+    public void addGenre(int userId, ArrayList<String> genres){
+
+        String sql = "INSERT INTO genres (userId, genre) VALUES (?, ?)";
+
+        try{
+            Connection connection = con();
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            for(String genre : genres){
+                ps.setInt(1, userId);
+                ps.setString(2, genre);
+
+                ps.executeUpdate();
+                
+            }
+            ps.close();
+      
+        }catch(SQLException e){
             e.printStackTrace();
         }
+    }
 
+    public String getRole(String userName, String password){
+
+        String sql = "SELECT role FROM users WHERE userName = ? and password = ?";
+
+        try{
+            Connection connection = con();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, userName);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return rs.getString("role");
+            }
+            ps.close();
+            rs.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
         return null;
     }
 }

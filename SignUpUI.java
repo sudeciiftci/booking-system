@@ -8,7 +8,7 @@ public class SignUpUI extends JFrame {
 
     public SignUpUI() {
 
-        UserDB userDB = new UserDB();
+        UserService userService = new UserService();
 
         setTitle("Sign Up");
         setSize(400, 400);
@@ -89,32 +89,16 @@ public class SignUpUI extends JFrame {
 
                 String name = nameField.getText();
                 String email = emailField.getText();
-                String password = new String(passField.getPassword());   
+                String password = new String(passField.getPassword());  
+                
+                boolean success = userService.validateUser(name, email, password, genres);
 
-                if(name.isEmpty() || email.isEmpty() || password.isEmpty()){
-
-                    JOptionPane.showMessageDialog(SignUpUI.this, "Fields cannot be empty!");
-                    return;
-                }else if(!email.contains("@gmail.com")){
-                    JOptionPane.showMessageDialog(SignUpUI.this, 
-                        "Invalid email format!\nEmail must end with @gmail.com");                    
-                    return;
-                }else if(name.length() < 3){
-                    JOptionPane.showMessageDialog(SignUpUI.this, 
-    "Name is too short!\nPlease enter at least 3 characters.");
-                    return;
-                }else if(!password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).+$")){
-
+                if(success){
                     JOptionPane.showMessageDialog(SignUpUI.this,
-    "Password must contain at least:\n- 1 uppercase letter\n- 1 number\n- 1 special character");
-                    return;
-                }else if(genres.isEmpty()){
-                    JOptionPane.showMessageDialog(SignUpUI.this,
-    "Please select at least one genre!");
-                    return;
+                        "Validation successful. You can proceed with registration!");
                 }else{
-                    System.out.print("tamamdır");
-                    userDB.con();
+                    JOptionPane.showMessageDialog(SignUpUI.this,
+                        "Validation failed. Please check your input and try again.");
                 }
             }
         });
