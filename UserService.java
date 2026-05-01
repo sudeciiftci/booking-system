@@ -5,7 +5,7 @@ public class UserService {
 
     UserDB userDB = new UserDB();
     
-    public boolean validateUser(String name, String email, String password, ArrayList<String> genres){
+    public boolean validateRegister(String name, String email, String password, ArrayList<String> genres){
 
         if(name.isEmpty() || email.isEmpty() || password.isEmpty()){
             JOptionPane.showMessageDialog(null, "Fields cannot be empty!");
@@ -38,7 +38,7 @@ public class UserService {
 
     public boolean register(String name, String email, String password, ArrayList<String> genres){
 
-        if(validateUser(name, email, password, genres)){
+        if(validateRegister(name, email, password, genres)){
 
             User user = new RegisteredUser(name, email, password);
             int userId = userDB.addUser(user);
@@ -56,5 +56,38 @@ public class UserService {
         }
         return false;
     }
+
+    public boolean validateLogin(String name, String password){
+
+        if(name.isEmpty() || password.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Fields cannot be empty!");
+            return false;
+        }
+        return true;
+    }
+
+    public String login(String name, String password){
+
+        if(validateLogin(name, password)){
+            return userDB.getRole(name, password);
+        }
+        return null;
+    }
+
+    public void openPage(String role){
+
+    if(role == null){
+        System.out.println("Invalid login");
+        return;
+    }
+
+    if(role.equals("user")){
+        System.out.println("user page opened");
+    }
+    else if(role.equals("admin")){
+        new AdminUI();
+    }
+}
+
 
 }

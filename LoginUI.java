@@ -7,7 +7,7 @@ public class LoginUI extends JFrame {
 
     public LoginUI() {
 
-        UserDB userDB = new UserDB();
+        UserService userService = new UserService();
 
         setTitle("Login");
         setSize(400, 300);
@@ -46,22 +46,9 @@ public class LoginUI extends JFrame {
                 String userName = userField.getText();
                 String password = new String(passField.getPassword());
 
-                if(userName.isEmpty() || password.isEmpty()){
-                    JOptionPane.showMessageDialog(LoginUI.this, "Fields cannot be empty!");
-                    return;
-                }else{
-                    String role = userDB.getRole(userName, password);
+                String role = userService.login(userName, password);
+                userService.openPage(role);
 
-                    if(role == null){
-                        System.out.println("Invalid username or password");
-                    }
-                    else if(role.equals("user")){
-                        System.out.println("user page opened");
-                    }
-                    else if(role.equals("admin")){
-                        System.out.println("admin page opened");
-                    }
-                }
             }
         });
 

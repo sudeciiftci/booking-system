@@ -91,7 +91,7 @@ public class SignUpUI extends JFrame {
                 String email = emailField.getText();
                 String password = new String(passField.getPassword());  
                 
-                boolean success = userService.validateUser(name, email, password, genres);
+                boolean success = userService.validateRegister(name, email, password, genres);
 
                 if(success){
                     JOptionPane.showMessageDialog(SignUpUI.this,
