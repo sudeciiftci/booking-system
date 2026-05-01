@@ -6,13 +6,25 @@ public class Movie {
     private String description;
     private double rating;
 
-    public Movie(int movieId, String title, String genre, int duration, String description, double rating){
-        this.movieId = movieId;
+    public Movie(String title, String genre, int duration, String description, double rating){
         this.title = title;
         this.genre = genre;
         this.duration = duration;
         this.description = description;
         this.rating = rating;
+    }
+
+    public Movie(int id, String title, String genre, int duration, String description, double rating) {
+        this.movieId = id;
+        this.title = title;
+        this.genre = genre;
+        this.duration = duration;
+        this.description = description;
+        this.rating = rating;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     public int getMovieId() { return movieId; }

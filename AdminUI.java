@@ -4,6 +4,7 @@ import java.awt.*;
 public class AdminUI extends JFrame {
 
     JPanel contentPanel;
+    MoviePanel moviePanel;
 
     public AdminUI() {
 
@@ -51,6 +52,8 @@ public class AdminUI extends JFrame {
         contentPanel.setBackground(Color.WHITE);
         add(contentPanel);
 
+        moviePanel = new MoviePanel(contentPanel);
+
         setPanel(new HomePanel());
 
         // ================= DASHBOARD =================
@@ -60,7 +63,7 @@ public class AdminUI extends JFrame {
         usersBtn.addActionListener(e -> simple("Users Panel"));
         reportsBtn.addActionListener(e -> simple("Reports Panel"));
 
-        // ================= MOVIES HOVER MENU =================
+        // ================= MOVIES POPUP =================
         JPopupMenu movieMenu = new JPopupMenu();
 
         JMenuItem addMovie = new JMenuItem("Add Movie");
@@ -74,13 +77,12 @@ public class AdminUI extends JFrame {
         movieMenu.add(listMovie);
 
         // ================= ACTIONS =================
-        addMovie.addActionListener(e -> showAddMovie());
-        updateMovie.addActionListener(e -> showUpdateMovie());
-        deleteMovie.addActionListener(e -> showDeleteMovie());
-        listMovie.addActionListener(e -> showListMovie());
+        addMovie.addActionListener(e -> moviePanel.showAddMovie());
+        updateMovie.addActionListener(e -> moviePanel.showUpdateMovie());
+        deleteMovie.addActionListener(e -> moviePanel.showDeleteMovie());
+        listMovie.addActionListener(e -> moviePanel.showListMovie());
 
         moviesBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
                 movieMenu.show(moviesBtn, 0, moviesBtn.getHeight());
             }
@@ -107,109 +109,12 @@ public class AdminUI extends JFrame {
         }
     }
 
-    // ================= ADD MOVIE =================
-    private void showAddMovie() {
-        contentPanel.removeAll();
-
-        JLabel title = new JLabel("Add Movie");
-        title.setBounds(200, 50, 200, 30);
-        title.setFont(new Font("Arial", Font.BOLD, 18));
-        contentPanel.add(title);
-
-        JTextField name = new JTextField();
-        name.setBounds(200, 100, 200, 30);
-        contentPanel.add(name);
-
-        JTextField genre = new JTextField();
-        genre.setBounds(200, 140, 200, 30);
-        contentPanel.add(genre);
-
-        JButton save = new JButton("Save");
-        save.setBounds(200, 200, 120, 30);
-        contentPanel.add(save);
-
-        save.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Movie Added: " + name.getText()));
-
-        refresh();
-    }
-
-    // ================= UPDATE MOVIE =================
-    private void showUpdateMovie() {
-        contentPanel.removeAll();
-
-        JLabel title = new JLabel("Update Movie");
-        title.setBounds(200, 50, 200, 30);
-        title.setFont(new Font("Arial", Font.BOLD, 18));
-        contentPanel.add(title);
-
-        JTextField search = new JTextField();
-        search.setBounds(200, 100, 200, 30);
-        contentPanel.add(search);
-
-        JTextField newName = new JTextField();
-        newName.setBounds(200, 140, 200, 30);
-        contentPanel.add(newName);
-
-        JButton update = new JButton("Update");
-        update.setBounds(200, 200, 120, 30);
-        contentPanel.add(update);
-
-        update.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Movie Updated"));
-
-        refresh();
-    }
-
-    // ================= DELETE MOVIE =================
-    private void showDeleteMovie() {
-        contentPanel.removeAll();
-
-        JLabel title = new JLabel("Delete Movie");
-        title.setBounds(200, 50, 200, 30);
-        title.setFont(new Font("Arial", Font.BOLD, 18));
-        contentPanel.add(title);
-
-        JTextField search = new JTextField();
-        search.setBounds(200, 100, 200, 30);
-        contentPanel.add(search);
-
-        JButton delete = new JButton("Delete");
-        delete.setBounds(200, 150, 120, 30);
-        contentPanel.add(delete);
-
-        delete.addActionListener(e ->
-                JOptionPane.showMessageDialog(this,
-                        "Deleted: " + search.getText()));
-
-        refresh();
-    }
-
-    // ================= LIST MOVIE =================
-    private void showListMovie() {
-        contentPanel.removeAll();
-
-        JLabel title = new JLabel("Movie List");
-        title.setBounds(200, 50, 200, 30);
-        title.setFont(new Font("Arial", Font.BOLD, 18));
-        contentPanel.add(title);
-
-        JLabel info = new JLabel("No movies yet (DB later)");
-        info.setBounds(200, 120, 300, 30);
-        contentPanel.add(info);
-
-        refresh();
-    }
-
     // ================= SIMPLE =================
     private void simple(String text) {
         contentPanel.removeAll();
 
         JLabel label = new JLabel(text);
-        label.setBounds(200, 200, 300, 30);
-        label.setFont(new Font("Arial", Font.BOLD, 16));
+        label.setBounds(200, 200, 200, 30);
         contentPanel.add(label);
 
         refresh();

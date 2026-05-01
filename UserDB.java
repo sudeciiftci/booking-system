@@ -1,5 +1,4 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,18 +7,14 @@ import java.util.ArrayList;
 
 public class UserDB {
 
-    public Connection con() throws SQLException {
-
-        return DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
-
-    }
+    DataBase dataBase = new DataBase();
 
     public int addUser(User user){
 
         String sql = "INSERT INTO users (userName, email, password, role) VALUES(?, ?, ?, ?)";
 
         try{
-            Connection conn = con();
+            Connection conn = dataBase.con();
             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, user.getName());
@@ -51,7 +46,7 @@ public class UserDB {
         String sql = "INSERT INTO genres (userId, genre) VALUES (?, ?)";
 
         try{
-            Connection connection = con();
+            Connection connection = dataBase.con();
             PreparedStatement ps = connection.prepareStatement(sql);
 
             for(String genre : genres){
@@ -73,7 +68,7 @@ public class UserDB {
         String sql = "SELECT role FROM users WHERE userName = ? and password = ?";
 
         try{
-            Connection connection = con();
+            Connection connection = dataBase.con();
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, userName);
             ps.setString(2, password);
