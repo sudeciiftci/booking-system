@@ -5,6 +5,7 @@ public class AdminUI extends JFrame {
 
     JPanel contentPanel;
     MoviePanel moviePanel;
+    HallPanel hallPanel; 
 
     public AdminUI() {
 
@@ -53,13 +54,44 @@ public class AdminUI extends JFrame {
         add(contentPanel);
 
         moviePanel = new MoviePanel(contentPanel);
+        hallPanel = new HallPanel(contentPanel); 
 
         setPanel(new HomePanel());
+
+        // ================= SESSION POPUP =================
+        JPopupMenu sessionMenu = new JPopupMenu();
+
+        // ===== HALL MENU =====
+        JMenu hallMenu = new JMenu("Hall");
+
+        JMenuItem addHall = new JMenuItem("Add Hall");
+        JMenuItem updateHall = new JMenuItem("Update Hall");
+
+        hallMenu.add(addHall);
+        hallMenu.add(updateHall);
+
+        addHall.addActionListener(e -> hallPanel.showAddHall());
+        updateHall.addActionListener(e -> hallPanel.showUpdateHall());
+
+        // ===== SESSION MENU =====
+        JMenu sessionSubMenu = new JMenu("Session");
+
+        JMenuItem addSession = new JMenuItem("Add Session");
+        JMenuItem updateSession = new JMenuItem("Update Session");
+        JMenuItem deleteSession = new JMenuItem("Delete Session");
+        JMenuItem listSession = new JMenuItem("List Sessions");
+
+        sessionSubMenu.add(addSession);
+        sessionSubMenu.add(updateSession);
+        sessionSubMenu.add(deleteSession);
+        sessionSubMenu.add(listSession);
+
+        sessionMenu.add(hallMenu);
+        sessionMenu.add(sessionSubMenu);
 
         // ================= DASHBOARD =================
         dashboardBtn.addActionListener(e -> setPanel(new HomePanel()));
 
-        sessionBtn.addActionListener(e -> simple("Sessions Panel"));
         usersBtn.addActionListener(e -> simple("Users Panel"));
         reportsBtn.addActionListener(e -> simple("Reports Panel"));
 
@@ -85,6 +117,12 @@ public class AdminUI extends JFrame {
         moviesBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent e) {
                 movieMenu.show(moviesBtn, 0, moviesBtn.getHeight());
+            }
+        });
+
+        sessionBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                sessionMenu.show(sessionBtn, 0, sessionBtn.getHeight());
             }
         });
 
