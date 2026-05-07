@@ -4,10 +4,73 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserDB {
 
     DataBase dataBase = new DataBase();
+
+    public RegisteredUser getUser(String userName, String password){
+
+    String sql = "SELECT * FROM users WHERE userName = ? AND password = ?";
+
+    try {
+        Connection conn = dataBase.con();
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, userName);
+        ps.setString(2, password);
+
+        ResultSet rs = ps.executeQuery();
+
+        if(rs.next()){
+
+            int id = rs.getInt("userId");
+            String name = rs.getString("userName");
+            String email = rs.getString("email");
+            String pass = rs.getString("password");
+            String role = rs.getString("role");
+
+            return new RegisteredUser(id, name, email, pass, role);
+        }
+
+        ps.close();
+        rs.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
+
+    public List<String> getUserGenres(int userId){
+
+        List<String> genres = new ArrayList<>();
+
+        String sql = "SELECT genre FROM genres WHERE userId = ?";
+
+        try{
+            Connection conn = dataBase.con();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                genres.add(rs.getString("genre"));
+            }
+
+            ps.close();
+            rs.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return genres;
+    }
 
     public int addUser(User user){
 

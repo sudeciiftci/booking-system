@@ -3,6 +3,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SignUpUI",
+            "request": "launch",
+            "mainClass": "SignUpUI",
+            "projectName": "bookinkSystem_b6a5e1e1"
+        },
+        {
+            "type": "java",
+            "name": "LoginUI",
+            "request": "launch",
+            "mainClass": "LoginUI",
+            "projectName": "bookinkSystem_b6a5e1e1"
+        },
+        {
+            "type": "java",
+            "name": "UserUI",
+            "request": "launch",
+            "mainClass": "UserUI",
+            "projectName": "bookinkSystem_b6a5e1e1"
+        },
+        {
+            "type": "java",
             "name": "AdminUI",
             "request": "launch",
             "mainClass": "AdminUI",

@@ -6,6 +6,8 @@ public class AdminUI extends JFrame {
     JPanel contentPanel;
     MoviePanel moviePanel;
     HallPanel hallPanel; 
+    SessionPanel sessionPanel;
+
 
     public AdminUI() {
 
@@ -55,6 +57,7 @@ public class AdminUI extends JFrame {
 
         moviePanel = new MoviePanel(contentPanel);
         hallPanel = new HallPanel(contentPanel); 
+        sessionPanel = new SessionPanel(contentPanel);
 
         setPanel(new HomePanel());
 
@@ -88,6 +91,11 @@ public class AdminUI extends JFrame {
 
         sessionMenu.add(hallMenu);
         sessionMenu.add(sessionSubMenu);
+
+        addSession.addActionListener(e -> sessionPanel.showAddSession());
+        updateSession.addActionListener(e -> sessionPanel.showUpdateSession());
+        deleteSession.addActionListener(e -> sessionPanel.showDeleteSession());
+        listSession.addActionListener(e -> sessionPanel.showListSession());
 
         // ================= DASHBOARD =================
         dashboardBtn.addActionListener(e -> setPanel(new HomePanel()));

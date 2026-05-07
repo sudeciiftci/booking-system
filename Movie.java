@@ -5,6 +5,30 @@ public class Movie {
     private int duration;
     private String description;
     private double rating;
+    private String imagePath;
+
+    
+    
+
+    public Movie(int movieId, String title, String genre, int duration, String description, double rating,
+            String imagePath) {
+        this.movieId = movieId;
+        this.title = title;
+        this.genre = genre;
+        this.duration = duration;
+        this.description = description;
+        this.rating = rating;
+        this.imagePath = imagePath;
+    }
+
+    public Movie(String title, String genre, int duration, String description, double rating, String imagePath) {
+        this.title = title;
+        this.genre = genre;
+        this.duration = duration;
+        this.description = description;
+        this.rating = rating;
+        this.imagePath = imagePath;
+    }
 
     public Movie(String title, String genre, int duration, String description, double rating){
         this.title = title;
@@ -33,12 +57,18 @@ public class Movie {
     public int getDuration() { return duration; }
     public String getDescription() { return description; }
     public double getRating() { return rating; }
+    public String getImagePath(){ return imagePath; }
 
   
     public void setTitle(String title) { this.title = title; }
     public void setGenre(String genre) { this.genre = genre; }
     public void setDuration(int duration) { this.duration = duration; }
     public void setDescription(String description) { this.description = description; }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 
     void addRating(int rating){
 

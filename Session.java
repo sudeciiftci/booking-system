@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class Session {
     private int sessionId;
     private Movie movie;
@@ -7,13 +5,22 @@ public class Session {
     private String dateTime;
     private double price;
 
-    public Session(int sessionId, Movie movie, Hall hall, String dateTime, double price){
+    public Session(Movie movie, Hall hall, String dateTime, double price){
+        this.movie = movie;
+        this.hall = hall;
+        this.dateTime = dateTime;
+        this.price = price;
+    }
+    
+
+    public Session(int sessionId, Movie movie, Hall hall, String dateTime, double price) {
         this.sessionId = sessionId;
         this.movie = movie;
         this.hall = hall;
         this.dateTime = dateTime;
         this.price = price;
     }
+
 
     public int getSessionId() { return sessionId; }
     public Movie getMovie() { return movie; }
@@ -24,7 +31,11 @@ public class Session {
     public void setDateTime(String dateTime) { this.dateTime = dateTime; }
     public void setPrice(double price) { this.price = price; }
 
-    public List<Seat> getAvailableSeats() {
-
+    @Override
+    public String toString() {
+        return sessionId + " | " 
+            + movie.getTitle() + " | " 
+            + hall.getName() + " | " 
+            + dateTime;
     }
 }

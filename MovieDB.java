@@ -11,7 +11,7 @@ public class MovieDB {
 
     public boolean saveMovie(Movie movie){
 
-        String sql = "INSERT INTO movies (title, genre, duration, description, rating) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO movies (title, genre, duration, description, rating, image_path) VALUES (?, ?, ?, ?, ?, ?)";
 
         try{
             Connection connection = dataBase.con();
@@ -22,6 +22,7 @@ public class MovieDB {
             ps.setInt(3, movie.getDuration());
             ps.setString(4, movie.getDescription());
             ps.setDouble(5, movie.getRating());
+            ps.setString(6, movie.getImagePath());
 
             ps.executeUpdate();
             ps.close();
@@ -106,6 +107,7 @@ public class MovieDB {
     public List<Movie> getAllMovies() {
 
         List<Movie> movies = new ArrayList<>();
+
         String sql = "SELECT * FROM movies";
         try {
             Connection con = dataBase.con();
@@ -118,7 +120,8 @@ public class MovieDB {
                         rs.getString("genre"),
                         rs.getInt("duration"),
                         rs.getString("description"),
-                        rs.getDouble("rating")
+                        rs.getDouble("rating"),
+                        rs.getString("image_path")
                 );
                 movies.add(movie);
             }
@@ -130,4 +133,57 @@ public class MovieDB {
         return movies;
     }
 
+   public Movie getMovieById(int id){
+
+        String sql = "SELECT * FROM movies WHERE movie_id = ?";
+
+        try{
+            Connection connection = dataBase.con();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Movie movie = new Movie(
+                        rs.getInt("movie_id"),
+                        rs.getString("title"),
+                        rs.getString("genre"),
+                        rs.getInt("duration"),
+                        rs.getString("description"),
+                        rs.getDouble("rating")
+                );
+                rs.close();
+                ps.close();
+                return movie;
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    } 
+
+    public List<String> getUserGenres(int userId) {
+
+        List<String> genres = new ArrayList<>();
+
+        String sql = "SELECT genre FROM genres WHERE userId = ?";
+
+        try (Connection conn = dataBase.con();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                genres.add(rs.getString("genre"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return genres;
+    }
 }

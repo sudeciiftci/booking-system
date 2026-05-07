@@ -32,7 +32,7 @@ public class MoviePanel {
         genreField.setBounds(140, 60, 200, 30);
         contentPanel.add(genreField);
 
-        JLabel durationLabel = new JLabel("Duration (min):");
+        JLabel durationLabel = new JLabel("Duration:");
         durationLabel.setBounds(20, 100, 120, 30);
         contentPanel.add(durationLabel);
 
@@ -56,8 +56,30 @@ public class MoviePanel {
         ratingField.setBounds(140, 180, 200, 30);
         contentPanel.add(ratingField);
 
+        // ===== IMAGE =====
+        JLabel imageLabel = new JLabel("Poster:");
+        imageLabel.setBounds(20, 220, 120, 30);
+        contentPanel.add(imageLabel);
+
+        JTextField imageField = new JTextField();
+        imageField.setBounds(140, 220, 200, 30);
+        contentPanel.add(imageField);
+
+        JButton browseBtn = new JButton("Select");
+        browseBtn.setBounds(350, 220, 90, 30);
+        contentPanel.add(browseBtn);
+
+        browseBtn.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            int result = chooser.showOpenDialog(null);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                imageField.setText(chooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+
         JButton save = new JButton("Save Movie");
-        save.setBounds(140, 230, 200, 35);
+        save.setBounds(140, 270, 200, 35);
         contentPanel.add(save);
 
         save.addActionListener(e -> {
@@ -68,33 +90,27 @@ public class MoviePanel {
                 int duration = Integer.parseInt(durationField.getText());
                 String desc = descField.getText();
                 double rating = Double.parseDouble(ratingField.getText());
+                String imagePath = imageField.getText();
 
-                MovieService movieService = new MovieService();
+                MovieService service = new MovieService();
 
-                Movie movie = movieService.validateMovie(
-                        title,
-                        genre,
-                        duration,
-                        desc,
-                        rating
-                );
+                Movie movie = service.validateMovie(title, genre, duration, desc, rating, imagePath);
 
                 if (movie != null) {
-                    movieService.addMovie(movie);
-
-                    JOptionPane.showMessageDialog(null,
-                            "Movie Successfully Saved: " + movie.getTitle());
+                    service.addMovie(movie);
+                    JOptionPane.showMessageDialog(null, "Movie saved: " + movie.getTitle());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid data!");
                 }
 
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null,
-                        "Duration and Rating must be numbers!");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
             }
         });
 
         refresh();
     }
-
+    
     // ================= UPDATE MOVIE =================
     public void showUpdateMovie() {
 

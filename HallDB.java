@@ -1,7 +1,7 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HallDB {
 
@@ -74,4 +74,52 @@ public class HallDB {
         return null;
     }
 
+    public List<Hall> getAllHalls(){
+
+        List<Hall> halls = new ArrayList<>();
+
+        try {
+            Connection conn = dataBase.con();
+            String sql = "SELECT * FROM hall";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("hall_id");
+                String name = rs.getString("name");
+                int capacity = rs.getInt("seat_capacity");
+                Hall hall = new Hall(id, name, capacity);
+                halls.add(hall);
+            }
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return halls;
+    }
+
+    public Hall getHallById(int id) {
+
+        String sql = "SELECT * FROM hall WHERE hall_id = ?";
+
+        try (Connection conn = dataBase.con();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Hall(
+                    rs.getInt("hall_id"),
+                    rs.getString("name"),
+                    rs.getInt("seat_capacity")
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

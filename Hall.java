@@ -17,4 +17,9 @@ public class Hall {
     public String getName() { return name; }
     public int getSeatCapacity() { return seatCapacity; }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

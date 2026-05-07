@@ -4,6 +4,14 @@ import javax.swing.JOptionPane;
 public class UserService {
 
     UserDB userDB = new UserDB();
+
+    public RegisteredUser loginUser(String name, String password){
+
+        if(validateLogin(name, password)){
+            return userDB.getUser(name, password); 
+        }
+        return null;
+    }
     
     public boolean validateRegister(String name, String email, String password, ArrayList<String> genres){
 
@@ -74,20 +82,20 @@ public class UserService {
         return null;
     }
 
-    public void openPage(String role){
+    public void openPage(RegisteredUser user){
 
-    if(role == null){
-        System.out.println("Invalid login");
-        return;
-    }
+        if(user == null){
+            System.out.println("Invalid login");
+            return;
+        }
 
-    if(role.equals("user")){
-        System.out.println("user page opened");
+        if(user.getRole().equals("user")){
+            new UserUI(user); 
+        }
+        else if(user.getRole().equals("admin")){
+            new AdminUI();
+        }
     }
-    else if(role.equals("admin")){
-        new AdminUI();
-    }
-}
 
 
 }

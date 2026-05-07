@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class LoginUI extends JFrame {
 
@@ -39,18 +38,20 @@ public class LoginUI extends JFrame {
         loginButton.setBounds(130, 190, 120, 40);
         add(loginButton);
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                String userName = userField.getText();
-                String password = new String(passField.getPassword());
+        loginButton.addActionListener(e -> {
 
-                String role = userService.login(userName, password);
-                userService.openPage(role);
+        String userName = userField.getText();
+        String password = new String(passField.getPassword());
 
-            }
-        });
+        RegisteredUser user = userService.loginUser(userName, password);
+
+        if(user != null){
+            userService.openPage(user);
+            dispose(); 
+        } else {
+            JOptionPane.showMessageDialog(null, "Login failed!");
+        }
+    });
 
         setVisible(true);
     }
